@@ -1,4 +1,6 @@
 {
-  "name": "MiCocina",
-  "displayName": "MiCocina"
+  "expo": {
+    "name": "MiCocina",
+    "slug": "MiCocina"
+  }
 }
