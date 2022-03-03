@@ -28,12 +28,12 @@
    }
  })
  
- const ExpirationPage = () => {
+ const AddItem = () => {
    return (
    <View style={[styles.center, {top: 50}]}>
-     <Text>Expiration Page</Text>
+     <Text>Add Item</Text>
    </View>
    );
  };
  
- export default ExpirationPage;
+ export default AddItem;
