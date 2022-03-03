@@ -38,9 +38,9 @@ const GroceryPage = () =>{
   
     // default items
     const[items, setItems] = useState([
-        {id:1, itemName:'bananas'},
-        {id:2, itemName:'apples'},
-        {id:3, itemName:'orange juice'}
+        {id:1, itemName:'bananas', product_qty: 1},
+        {id:2, itemName:'apples', product_qty: 1},
+        {id:3, itemName:'orange juice', product_qty: 1}
     ]);
 
     //asynch storage 
@@ -74,6 +74,23 @@ const GroceryPage = () =>{
     //     }
     // }
 
+    //decrement 
+    const decrementQuantity = itemID=> {
+        setItems(items=>
+            items.map((item) =>
+            itemID ==item.id ? {...item, product_qty:item.product_qty - 1 } : item)
+        )
+    };
+
+    //increment
+    const incrementQuantity = itemID=> {
+        setItems(items=>
+            items.map((item) =>
+            itemID ==item.id ? {...item, product_qty:item.product_qty + 1 } : item)
+        )
+    };
+
+
     // list container
     const ListItem = ({item}) =>{
         return (
@@ -81,6 +98,17 @@ const GroceryPage = () =>{
             <View style= {{flex:1}}>
                 <Text style= {{fontWeight:'bold', fontSize: 15, color:'#000000' }}>{item?.itemName}</Text>
             </View>
+            <TouchableOpacity onPress={() => decrementQuantity(item?.id)}>
+                <View style={styles.addButtonSmall}>
+                        <Text>-</Text>
+                    </View>
+            </TouchableOpacity>
+                <Text>{item?.product_qty}</Text>
+            <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
+                <View style={styles.addButtonSmall}>
+                        <Text>+</Text>
+                    </View>
+            </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.circle}
                 onPress={() =>deleteID(item?.id)}
@@ -96,6 +124,7 @@ const GroceryPage = () =>{
         const newItem = {
             id:Math.random(),
             itemName : textInput,
+            product_qty: 1,
         };
         setItems([...items, newItem]);
         setTextInput("");
@@ -137,7 +166,7 @@ const GroceryPage = () =>{
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
                 <Text style= {styles.headingText}>GROCERY LIST</Text>
-                <TouchableOpacity onPress={()=>setModalVisible(true)}>
+                <TouchableOpacity>
                     <AntDesign name="search1" size={24} color="black"/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={clearGroceryList}>
@@ -240,9 +269,16 @@ const styles = StyleSheet.create({
         alignItems : 'center',
         backgroundColor: '#9FD4AB',
         marginHorizontal: 5,
-
- 
-
+    },
+    addButtonSmall: {
+        width: 20,
+        height: 20,
+        borderRadius: 20 ,
+        elevation: 40,
+        justifyContent : 'center',
+        alignItems : 'center',
+        backgroundColor: '#9FD4AB',
+        marginHorizontal: 5,
     },
     itemList:{
         padding: 20,
@@ -262,6 +298,7 @@ const styles = StyleSheet.create({
         borderRadius: 20/2,
         justifyContent : 'center',
         alignItems : 'center',
+        marginLeft: 20
 
     },
 
