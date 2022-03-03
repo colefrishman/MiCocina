@@ -12,7 +12,7 @@
  import { StyleSheet, View, Text } from 'react-native-web';
  import BottomTabs from './Pages/BottomTabs';
 
- const Stack = createNativeStackNavigator();
+ //const Stack = createNativeStackNavigator();
  
  const App = () => {
    return (
@@ -31,6 +31,6 @@
      backgroundColor : '#fff',
      alignItems: "center",
      justifyContent : "center",
-   }
-
+   },
+  
  })
