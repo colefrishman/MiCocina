@@ -6,31 +6,23 @@
  * @flow strict-local
  */
 
- import React from 'react';
- import { NavigationContainer } from '@react-navigation/native';
- import { createNativeStackNavigator } from '@react-navigation/native-stack';
- import { StyleSheet, View, Text } from 'react-native-web';
- import BottomTabs from './Pages/BottomTabs';
+import React from 'react';
+import PickerPage from './Pages/PickerPage';
+import StartPage from './Pages/StartPage';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
- const Stack = createNativeStackNavigator();
- 
- const App = () => {
-   return (
-     <NavigationContainer>
-       <BottomTabs />
-     </NavigationContainer>
-     
-   );
- };
- 
- export default App;
+const Stack = createNativeStackNavigator();
 
- const styles = StyleSheet.create({
-   container: {
-     flex : 1, 
-     backgroundColor : '#fff',
-     alignItems: "center",
-     justifyContent : "center",
-   }
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="StartPage">
+        <Stack.Screen name="Home" component={StartPage} />
+        <Stack.Screen name="Pick" component={PickerPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
- })
+export default App;
