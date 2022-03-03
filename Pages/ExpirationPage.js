@@ -31,7 +31,7 @@
  const ExpirationPage = () => {
    return (
    <View style={[styles.center, {top: 50}]}>
-     <Text>Expiration Page</Text>
+     <Text>Expiration PAge</Text>
    </View>
    );
  };
