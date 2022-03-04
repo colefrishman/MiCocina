@@ -24,7 +24,7 @@
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
- import { Entypo, AntDesign } from "@expo/vector-icons";
+ import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
  import AsyncStorage from '@react-native-async-storage/async-storage';
  const { width } = Dimensions.get("window");
 
@@ -39,13 +39,85 @@ const PantryPage = () =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
-  
+    const [sort, setSort] = useState(0);
+    const [sortDirection, setSortDirection] = useState(false);
     // default items
     const[items, setItems] = useState([
         {id:0, itemName:'bananas', category:'Produce', product_qty: 1},
         {id:1, itemName:'apples', category:'Produce', product_qty: 1},
         {id:2, itemName:'orange juice', category: 'Uncategorized', product_qty: 1}
     ]);
+
+    //put items in sorted order
+    const sortItems = (sort_type) => {
+        let temp = [...items]
+
+        const ID = 0;
+        const ALPHABETICAL = 1;
+        const CATEGORICAL = 2;
+        const QUANTITY = 3;
+
+        let sd;
+        if(sort==sort_type){
+            sd = !sortDirection
+        }
+        else{
+            setSort(sort_type)
+            sd = false
+        }
+
+        setSortDirection(sd)
+
+        if(sort_type == ID){
+            temp.sort((a,b)=>{
+                if(a.id>b.id){
+                    return 1
+                }
+                if(a.id<b.id){
+                    return -1
+                }
+                return 0
+            })
+        }
+        if(sort_type == ALPHABETICAL){
+            temp.sort((a,b)=>{
+                if(a.itemName.toLowerCase() > b.itemName.toLowerCase()){
+                    return 1
+                }
+                if(a.itemName.toLowerCase() < b.itemName.toLowerCase()){
+                    return -1
+                }
+                return 0
+            })
+        }
+        if(sort_type == CATEGORICAL){
+            temp.sort((a,b)=>{
+                if(a.category.toLowerCase() > b.category.toLowerCase()){
+                    return 1
+                }
+                if(a.category.toLowerCase() < b.category.toLowerCase()){
+                    return -1
+                }
+                return 0
+            })
+        }
+        if(sort_type == QUANTITY){
+            temp.sort((a,b)=>{
+                if(a.product_qty > b.product_qty){
+                    return 1
+                }
+                if(a.product_qty < b.product_qty){
+                    return -1
+                }
+                return 0
+            })
+        }
+        
+        if(sd){   
+            temp.reverse()
+        }
+        setItems(temp)
+    }
 
     //decrement 
     const decrementQuantity = itemID=> {
@@ -63,7 +135,6 @@ const PantryPage = () =>{
         )
     };
 
-
     // list container
     const ListItem = ({item}) =>{
         return (
@@ -71,7 +142,7 @@ const PantryPage = () =>{
             <View style= {{flex:1}}>
                 <Text style= {{fontWeight:'bold', fontSize: 15, color:'#000000' }}>{item?.itemName}</Text>
             </View>
-            <Menu onSelect={value => {temp = [...items]; temp.find(i => i.id == item.id).category=value; setItems(temp); alert(items[0].category)}}>
+            <Menu onSelect={value => {temp = [...items]; temp.find(i => i.id == item.id).category=value; setItems(temp)}}>
                 <MenuTrigger text = {item.category} />
                 <MenuOptions>
                     <MenuOption value = "Dried Goods"   text="Dried Goods"/>
@@ -118,8 +189,8 @@ const PantryPage = () =>{
       }
     
     //delete entire list
-    const clearGroceryList = ()=>{
-        Alert.alert("Confirm", "Clear entire grocery list?",[
+    const clearPantryList = ()=>{
+        Alert.alert("Confirm", "Clear entire Pantry?",[
             {
             text: "Yes",
             onPress: ()=>setItems([]),
@@ -146,13 +217,24 @@ const PantryPage = () =>{
     return (
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
-                <Text style= {styles.headingText}>GROCERY LIST</Text>
+                <Text style= {styles.headingText}>PANTRY LIST</Text>
                 <TouchableOpacity>
                     <AntDesign name="search1" size={24} color="black"/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={clearGroceryList}>
+                <TouchableOpacity onPress={clearPantryList}>
                     <Entypo name="trash" size={24} color="black" />
                 </TouchableOpacity>
+                <Menu onSelect={(value) => sortItems(value)}>
+                    <MenuTrigger>
+                        <MaterialCommunityIcons name="sort" size={24} color="black" />
+                    </MenuTrigger>
+                    <MenuOptions>
+                        <MenuOption value = {0}  text="Sort by id"/>
+                        <MenuOption value = {1}  text="Sort by alphabetical"/>
+                        <MenuOption value = {2}  text="Sort by category"/>
+                        <MenuOption value = {3}  text="Sort by quantity"/>
+                    </MenuOptions>
+                </Menu>
         
             </View>
         
@@ -192,7 +274,7 @@ const styles = StyleSheet.create({
     header: {
         padding:  15,
         paddingLeft: 10,
-        paddingRight: 50,
+        paddingRight: 75,
         flexDirection: 'row',
         alignContent: 'center',
         justifyContent: 'space-between',
