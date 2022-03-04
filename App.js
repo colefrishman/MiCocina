@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
- import React from 'react';
+ import React, {useState} from 'react';
  import { NavigationContainer } from '@react-navigation/native';
  import { createNativeStackNavigator } from '@react-navigation/native-stack';
  import { StyleSheet, View, Text } from 'react-native-web';
@@ -16,14 +16,14 @@
  //const Stack = createNativeStackNavigator();
  
  const App = () => {
-   return (
-     <MenuProvider>
-      <NavigationContainer>
-        <BottomTabs />
-      </NavigationContainer>
-     </MenuProvider>
-     
-   );
+    return (
+      <MenuProvider>
+        <NavigationContainer>
+          <BottomTabs />
+        </NavigationContainer>
+      </MenuProvider>
+      
+    );
  };
  
  export default App;

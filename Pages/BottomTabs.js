@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 /*<Tab.Screen name = 'Expiration' component={ExpirationPage} />*/
 
 const BottomTabs = () => {
+
     return(
         <Tab.Navigator >
             <Tab.Screen name = 'Home' component={StartPage} />
