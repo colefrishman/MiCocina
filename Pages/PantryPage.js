@@ -45,7 +45,7 @@ const PantryPage = () =>{
     const[items, setItems] = useState([
         {id:0, itemName:'bananas', category:'Produce', product_qty: 1},
         {id:1, itemName:'apples', category:'Produce', product_qty: 1},
-        {id:2, itemName:'orange juice', category: 'Uncategorized', product_qty: 1}
+        {id:2, itemName:'orange juice', category: 'Drinks', product_qty: 1}
     ]);
 
     //put items in sorted order
@@ -148,6 +148,7 @@ const PantryPage = () =>{
                     <MenuOption value = "Dried Goods"   text="Dried Goods"/>
                     <MenuOption value = "Produce"       text="Produce"/>
                     <MenuOption value = "Uncategorized" text="Uncategorized"/>
+                    <MenuOption value = "Drinks" text="Drinks"/>
                 </MenuOptions>
             </Menu>
             <TouchableOpacity onPress={() => decrementQuantity(item?.id)}>
@@ -177,6 +178,7 @@ const PantryPage = () =>{
             id:Math.random(),
             itemName : textInput,
             product_qty: 1,
+            category: "Uncategorized"
         };
         setItems([...items, newItem]);
         setTextInput("");
