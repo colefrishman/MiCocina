@@ -11,14 +11,17 @@
  import { createNativeStackNavigator } from '@react-navigation/native-stack';
  import { StyleSheet, View, Text } from 'react-native-web';
  import BottomTabs from './Pages/BottomTabs';
+ import { MenuProvider } from 'react-native-popup-menu';
 
  //const Stack = createNativeStackNavigator();
  
  const App = () => {
    return (
-     <NavigationContainer>
-       <BottomTabs />
-     </NavigationContainer>
+     <MenuProvider>
+      <NavigationContainer>
+        <BottomTabs />
+      </NavigationContainer>
+     </MenuProvider>
      
    );
  };
