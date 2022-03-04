@@ -59,8 +59,10 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-.expo/web/
+.expo/
 package-lock.json
+yarn.lock
+
 
 node_modules
 node_modules
