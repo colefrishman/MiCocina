@@ -24,7 +24,7 @@
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
- import { Entypo, AntDesign,MaterialCommunityIcons } from "@expo/vector-icons";
+ import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
  import AsyncStorage from '@react-native-async-storage/async-storage';
  const { width } = Dimensions.get("window");
 
@@ -34,6 +34,7 @@
     MenuOption,
     MenuTrigger,
   } from 'react-native-popup-menu';
+import SearchComponent from '../components/SearchComponent';
 
 
 const GroceryPage = () =>{
@@ -43,6 +44,8 @@ const GroceryPage = () =>{
     const [sort, setSort] = useState(0);
     const [sortDirection, setSortDirection] = useState(false);
   
+    const [term, setTerm] = useState("");
+
     // default items
     const[items, setItems] = useState([
         {id:1, itemName:'bananas',category:'Produce', product_qty: 1},
@@ -274,7 +277,7 @@ const GroceryPage = () =>{
                     </MenuOptions>
                 </Menu>
             </View>
-        
+            <SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
             <FlatList 
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
