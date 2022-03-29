@@ -259,15 +259,9 @@ const GroceryPage = () =>{
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
                 <Text style= {styles.headingText}>GROCERY LIST</Text>
-                <TouchableOpacity>
-                    <AntDesign name="search1" size={24} color="black"/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={clearGroceryList}>
-                    <Entypo name="trash" size={24} color="black" />
-                </TouchableOpacity>
                 <Menu onSelect={(value) => sortItems(value)}>
                     <MenuTrigger>
-                        <MaterialCommunityIcons name="sort" size={24} color="black" />
+                        <MaterialCommunityIcons name="sort" size={24} color="black" marginLeft={30}/>
                     </MenuTrigger>
                     <MenuOptions>
                         <MenuOption value = {0}  text="Sort by id"/>
@@ -276,6 +270,9 @@ const GroceryPage = () =>{
                         <MenuOption value = {3}  text="Sort by quantity"/>
                     </MenuOptions>
                 </Menu>
+                <TouchableOpacity onPress={clearGroceryList}>
+                    <Entypo name="trash" size={24} color="black" paddingHorizontal={20}/>
+                </TouchableOpacity>
             </View>
             <SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
             <FlatList 
