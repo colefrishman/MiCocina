@@ -53,37 +53,6 @@ const GroceryPage = () =>{
         {id:3, itemName:'orange juice', category:'Drinks', product_qty: 1}
     ]);
 
-    //asynch storage 
-
-    // useEffect( () => {
-    //     getItemList();
-    // }, []);
-
-    // useEffect(() => {
-    //     saveItem(items);
-    // }, [items]);
-    
-    // const saveItem = async items =>{
-    //     try{
-    //         const stringifyItems= JSON.stringify(items);
-    //         await AsyncStorage.setItem('items', stringifyItems);
-    //     } catch(e){
-    //         console.log(e);
-    //         //error
-    //     }
-    // }
-
-    // const getItemList = async () => {
-    //     try {
-    //         const items =await AsyncStorage.getItem('items');
-    //         if(items != null){
-    //             setItems(JSON.parse(items));
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
     const sortItems = (sort_type) => {
         let temp = [...items]
 
@@ -203,7 +172,8 @@ const GroceryPage = () =>{
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.circle}
-                onPress={() =>deleteID(item?.id)}
+                //onPress={() =>deleteID(item?.id)
+                onPress={() =>addPantry(item?.id)}
             />
         </View>
         
@@ -237,10 +207,24 @@ const GroceryPage = () =>{
             onPress: ()=>setItems([]),
             },{
                 text:"No",
+                
             }
     
         ])
         
+    }
+    //delete item and ask if adding to pantry
+    const addPantry = itemID => {
+        Alert.alert("Adding to Pantry", "Would you like to add item to your pantry?",[
+            {
+            text: "Yes",
+            onPress: () => deleteID(itemID)
+            },{
+                text:"No",
+                onPress: () => deleteID(itemID)
+            }
+    
+        ])
     }
  
     //getting font
