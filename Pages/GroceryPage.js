@@ -24,23 +24,33 @@
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
- import { Entypo, AntDesign } from "@expo/vector-icons";
+ import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
  import AsyncStorage from '@react-native-async-storage/async-storage';
  const { width } = Dimensions.get("window");
 
-
+ import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+  } from 'react-native-popup-menu';
+import SearchComponent from '../components/SearchComponent';
 
 
 const GroceryPage = () =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
+    const [sort, setSort] = useState(0);
+    const [sortDirection, setSortDirection] = useState(false);
   
+    const [term, setTerm] = useState("");
+
     // default items
     const[items, setItems] = useState([
-        {id:1, itemName:'bananas', product_qty: 1},
-        {id:2, itemName:'apples', product_qty: 1},
-        {id:3, itemName:'orange juice', product_qty: 1}
+        {id:1, itemName:'bananas',category:'Produce', product_qty: 1},
+        {id:2, itemName:'apples', category:'Produce', product_qty: 1},
+        {id:3, itemName:'orange juice', category:'Drinks', product_qty: 1}
     ]);
 
     //asynch storage 
@@ -74,6 +84,76 @@ const GroceryPage = () =>{
     //     }
     // }
 
+    const sortItems = (sort_type) => {
+        let temp = [...items]
+
+        const ID = 0;
+        const ALPHABETICAL = 1;
+        const CATEGORICAL = 2;
+        const QUANTITY = 3;
+
+        let sd;
+        if(sort==sort_type){
+            sd = !sortDirection
+        }
+        else{
+            setSort(sort_type)
+            sd = false
+        }
+
+        setSortDirection(sd)
+
+        if(sort_type == ID){
+            temp.sort((a,b)=>{
+                if(a.id>b.id){
+                    return 1
+                }
+                if(a.id<b.id){
+                    return -1
+                }
+                return 0
+            })
+        }
+        if(sort_type == ALPHABETICAL){
+            temp.sort((a,b)=>{
+                if(a.itemName.toLowerCase() > b.itemName.toLowerCase()){
+                    return 1
+                }
+                if(a.itemName.toLowerCase() < b.itemName.toLowerCase()){
+                    return -1
+                }
+                return 0
+            })
+        }
+        if(sort_type == CATEGORICAL){
+            temp.sort((a,b)=>{
+                if(a.category.toLowerCase() > b.category.toLowerCase()){
+                    return 1
+                }
+                if(a.category.toLowerCase() < b.category.toLowerCase()){
+                    return -1
+                }
+                return 0
+            })
+        }
+        if(sort_type == QUANTITY){
+            temp.sort((a,b)=>{
+                if(a.product_qty > b.product_qty){
+                    return 1
+                }
+                if(a.product_qty < b.product_qty){
+                    return -1
+                }
+                return 0
+            })
+        }
+        
+        if(sd){   
+            temp.reverse()
+        }
+        setItems(temp)
+    }
+
     //decrement 
     const decrementQuantity = itemID=> {
         setItems(items=>
@@ -98,6 +178,18 @@ const GroceryPage = () =>{
             <View style= {{flex:1}}>
                 <Text style= {{fontWeight:'bold', fontSize: 15, color:'#000000' }}>{item?.itemName}</Text>
             </View>
+            <Menu onSelect={value => {temp = [...items]; temp.find(i => i.id == item.id).category=value; setItems(temp)}}>
+                <MenuTrigger text = {item.category} />
+                <MenuOptions>
+                    <MenuOption value = "Dried Goods"   text="Dried Goods"/>
+                    <MenuOption value = "Produce"       text="Produce"/>
+                    <MenuOption value = "Uncategorized" text="Uncategorized"/>
+                    <MenuOption value = "Dairy" text="Dairy"/>
+                    <MenuOption value = "Deli" text="Deli"/>
+                    <MenuOption value = "Bread/Bakery" text="Bread/Bakery"/>
+                    <MenuOption value = "Frozen Food" text="Frozen Food"/>
+                </MenuOptions>
+            </Menu>
             <TouchableOpacity onPress={() => decrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>-</Text>
@@ -125,6 +217,7 @@ const GroceryPage = () =>{
             id:Math.random(),
             itemName : textInput,
             product_qty: 1,
+            category: "Uncategorized"
         };
         setItems([...items, newItem]);
         setTextInput("");
@@ -166,15 +259,22 @@ const GroceryPage = () =>{
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
                 <Text style= {styles.headingText}>GROCERY LIST</Text>
-                <TouchableOpacity>
-                    <AntDesign name="search1" size={24} color="black"/>
-                </TouchableOpacity>
+                <Menu onSelect={(value) => sortItems(value)}>
+                    <MenuTrigger>
+                        <MaterialCommunityIcons name="sort" size={24} color="black" marginLeft={30}/>
+                    </MenuTrigger>
+                    <MenuOptions>
+                        <MenuOption value = {0}  text="Sort by id"/>
+                        <MenuOption value = {1}  text="Sort by alphabetical"/>
+                        <MenuOption value = {2}  text="Sort by category"/>
+                        <MenuOption value = {3}  text="Sort by quantity"/>
+                    </MenuOptions>
+                </Menu>
                 <TouchableOpacity onPress={clearGroceryList}>
-                    <Entypo name="trash" size={24} color="black" />
+                    <Entypo name="trash" size={24} color="black" paddingHorizontal={20}/>
                 </TouchableOpacity>
-        
             </View>
-        
+            <SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
             <FlatList 
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
