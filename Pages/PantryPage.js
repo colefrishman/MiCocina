@@ -35,13 +35,17 @@
     MenuTrigger,
   } from 'react-native-popup-menu';
 
-const PantryPage = (items, setItems) =>{
+const PantryPage = (props) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
     const [sort, setSort] = useState(0);
     const [sortDirection, setSortDirection] = useState(false);
     // default items
+
+    
+    items = props.items
+    setItems = props.setItems
 
     //put items in sorted order
     const sortItems = (sort_type) => {

@@ -37,7 +37,7 @@
 import SearchComponent from '../components/SearchComponent';
 
 
-const GroceryPage = (items, setItems) =>{
+const GroceryPage = (props) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
@@ -45,6 +45,9 @@ const GroceryPage = (items, setItems) =>{
     const [sortDirection, setSortDirection] = useState(false);
   
     const [term, setTerm] = useState("");
+
+    items = props.items
+    setItems = props.setItems
 
     // default items
     
