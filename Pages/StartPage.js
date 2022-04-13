@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
- import React from 'react';
+ import React, {useState,useEffect} from 'react';
  import {
    SafeAreaView,
    ScrollView,
@@ -124,6 +124,7 @@ headingText:{
  
  
  const StartPage = ({navigation}) => {
+   const [term, setTerm] = useState("");
     //getting font
     let [fontsLoaded] = useFonts({
       Roboto_700Bold,
@@ -133,6 +134,8 @@ headingText:{
    if(!fontsLoaded){
        return <AppLoading /> ;
    }  
+
+   
 
    return (
     <SafeAreaView style= {styles.safeArea}>
