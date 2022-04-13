@@ -10,6 +10,7 @@
  import {
    SafeAreaView,
    StyleSheet,
+   ScrollView,
    View,
    Text,
    TextInput,
@@ -18,9 +19,8 @@
    Alert,
    Modal,
    Dimensions
-
-   
  } from 'react-native';
+ import {List} from 'react-native-paper';
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
@@ -34,13 +34,15 @@
     MenuOption,
     MenuTrigger,
   } from 'react-native-popup-menu';
+import { Button } from 'react-native-elements';
 
 const PantryPage = (items, setItems) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
     const [sort, setSort] = useState(0);
-    const [sortDirection, setSortDirection] = useState(false);
+    const [sortDirection, setSortDirection] = useState(false); 
+    
     // default items
 
     //put items in sorted order
@@ -85,7 +87,7 @@ const PantryPage = (items, setItems) =>{
                 return 0
             })
         }
-        if(sort_type == CATEGORICAL){
+        if(sort_type == CATEGORICAL){  
             temp.sort((a,b)=>{
                 if(a.category.toLowerCase() > b.category.toLowerCase()){
                     return 1
@@ -235,14 +237,62 @@ const PantryPage = (items, setItems) =>{
                 </Menu>
         
             </View>
-        
-            <FlatList 
+
+            <ScrollView>
+                <List.Section>
+                    <List.Accordion
+                        title="Dried Goods"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0 && item.category === "Dried Goods") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion
+                        title="Drinks"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Drinks") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion
+                        title="Produce"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Produce") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion
+                        title="Uncategorized"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Uncategorized") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+                </List.Section>
+            </ScrollView>
+
+            {/* <FlatList 
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items} 
                 renderItem= {({item})=>(item.pantry_qty >0) ? <ListItem item={item}/> : <></>}
             
-            />
+            /> */}
 
             <View style={styles.bottomAdd}>
                 <View style = {styles.inputBox}> 
