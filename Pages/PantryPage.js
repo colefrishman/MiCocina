@@ -35,18 +35,13 @@
     MenuTrigger,
   } from 'react-native-popup-menu';
 
-const PantryPage = () =>{
+const PantryPage = (items, setItems) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
     const [sort, setSort] = useState(0);
     const [sortDirection, setSortDirection] = useState(false);
     // default items
-    const[items, setItems] = useState([
-        {id:0, itemName:'bananas', category:'Produce', product_qty: 1},
-        {id:1, itemName:'apples', category:'Produce', product_qty: 1},
-        {id:2, itemName:'orange juice', category: 'Drinks', product_qty: 1}
-    ]);
 
     //put items in sorted order
     const sortItems = (sort_type) => {
@@ -103,10 +98,10 @@ const PantryPage = () =>{
         }
         if(sort_type == QUANTITY){
             temp.sort((a,b)=>{
-                if(a.product_qty > b.product_qty){
+                if(a.pantry_qty > b.pantry_qty){
                     return 1
                 }
-                if(a.product_qty < b.product_qty){
+                if(a.pantry_qty < b.pantry_qty){
                     return -1
                 }
                 return 0
@@ -123,7 +118,7 @@ const PantryPage = () =>{
     const decrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty - 1 } : item)
+            itemID ==item.id ? {...item, pantry_qty:item.pantry_qty - 1 } : item)
         )
     };
 
@@ -131,7 +126,7 @@ const PantryPage = () =>{
     const incrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty + 1 } : item)
+            itemID ==item.id ? {...item, pantry_qty:item.pantry_qty + 1 } : item)
         )
     };
 
@@ -156,7 +151,7 @@ const PantryPage = () =>{
                         <Text>-</Text>
                     </View>
             </TouchableOpacity>
-                <Text>{item?.product_qty}</Text>
+                <Text>{item?.pantry_qty}</Text>
             <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>+</Text>
@@ -177,7 +172,8 @@ const PantryPage = () =>{
         const newItem = {
             id:Math.random(),
             itemName : textInput,
-            product_qty: 1,
+            pantry_qty: 1,
+            grocery_qty: 0,
             category: "Uncategorized"
         };
         setItems([...items, newItem]);
@@ -244,7 +240,7 @@ const PantryPage = () =>{
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items} 
-                renderItem= {({item})=><ListItem item={item}/>}
+                renderItem= {({item})=>(item.pantry_qty >0) ? <ListItem item={item}/> : <></>}
             
             />
 
