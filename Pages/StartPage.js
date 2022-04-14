@@ -16,12 +16,15 @@
    Button,
    useColorScheme,
    View,
+   Image,
    TouchableOpacity,
  } from 'react-native';
- import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
+ import {  Roboto_700Bold, Roboto_900Black,Roboto_100Thin,Roboto_400Regular} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
- import {SearchBar} from 'react-native-elements';
+ import {Icon, SearchBar} from 'react-native-elements';
+ import { useNavigation } from '@react-navigation/native';
+ import { Entypo, AntDesign, MaterialIcons } from "@expo/vector-icons";
  //import SearchComponent from '../components/SearchComponent';
  
  var size = 150;
@@ -31,7 +34,7 @@
  const styles = StyleSheet.create({
   safeArea: {
     flex :1 ,
-    backgroundColor : '#9FD4AB',
+    backgroundColor : 'white',
   },
   header: {
     padding:  15,
@@ -46,9 +49,9 @@ headingText:{
   textAlignVertical: 'center',
   paddingLeft:19,
   paddingRight: 10,
-  textAlign: 'left',
+  textAlign: 'center',
   fontWeight: 'bold', 
-  fontSize: 25, 
+  fontSize: 38, 
   color: '#fff',
   width: '100%',
   fontFamily: 'Roboto_900Black'
@@ -63,46 +66,18 @@ headingText:{
      position: 'absolute',
      width: size,
      height: size,
-     top: t_b,
-     left: l_r,
-     //justifyContent: 'center',
-     //alignItems: 'center',
+     justifyContent: 'center',
+     alignItems: 'center',
      padding: 10,
      borderRadius: 100,
      backgroundColor: '#c1d4d3',
    },
-   myFridgeButton: {
-     position: 'absolute',
-     width: size,
-     height: size,
-     top: t_b,
-     right: l_r,
-     //justifyContent: 'center',
-     //alignItems: 'center',
-     padding: 40,
-     borderRadius: 100,
-     backgroundColor: '#c4c991',
-   },
-   myFreezerButton: {
-       position: 'absolute',
-       width: size,
-       height: size,
-       bottom: t_b + 80,
-       left: l_r,
-       //justifyContent: 'center',
-       //alignItems: 'center',
-       padding: 10,
-       borderRadius: 100,
-       backgroundColor: '#9faad4',
-     },
-   mySpicesButton: {
+   myGroceryButton: {
          position: 'absolute',
          width: size,
          height: size,
-         bottom: t_b + 80,
-         right: l_r,
-         //justifyContent: 'center',
-         //alignItems: 'center',
+         justifyContent: 'center',
+         alignItems: 'center',
          padding: 10,
          borderRadius: 100,
          backgroundColor: '#e69b97',
@@ -119,16 +94,62 @@ headingText:{
        borderRadius:10,
        borderWidth: 1,
        borderColor: '#000000'
-     }
+     },
+     body:{
+      textAlignVertical: 'center',
+      paddingTop:10,
+      paddingLeft:19,
+      paddingRight: 10,
+      textAlign: 'left',
+      fontSize: 18, 
+      color: "black",
+      width: '100%',
+     fontFamily: 'Roboto_400Regular'
+     }, 
+     oval: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      backgroundColor: "red",
+      transform: [{ scaleX: 2 }],
+       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    circle: {
+        width: 200,
+        height: 200,
+        borderRadius: 200 / 2,
+        backgroundColor: "red",
+    },
+    rectangle:{
+        width: 400,
+        height: 200,
+        backgroundColor: "red",
+    },
+    content:{
+      padding: 20,
+        flexDirection: 'row',
+        elevation: 12,
+        borderRadius: 15,
+        borderWidth: 1,
+        marginVertical: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#fff',
+    },
+
  });
  
  
- const StartPage = ({navigation}) => {
+ const StartPage = () => {
+  const navigation = useNavigation(); 
    const [term, setTerm] = useState("");
     //getting font
     let [fontsLoaded] = useFonts({
       Roboto_700Bold,
       Roboto_900Black,
+      Roboto_100Thin,
+      Roboto_400Regular,
    });
 
    if(!fontsLoaded){
@@ -140,88 +161,45 @@ headingText:{
    return (
     <SafeAreaView style= {styles.safeArea}>
       <View style = {styles.header}>
-      <Text style= {styles.headingText}>MiCocina</Text>
+      <Text style= {styles.headingText}>MICOCINA</Text>
       </View>
       <View>
-
- 
-     <TouchableOpacity
-               style={styles.sectionButton}
-               onPress={() => navigation.navigate('Pantry')}
-               underlayColor='#fff'>
-               <Text style={{
-                 position: 'absolute',
-                 right: 63,
-                 bottom: 10,
-                 fontWeight: 'bold',
-                 fontSize: 24,
-               }}>
-               View All Sections</Text>
- 
-      </TouchableOpacity>
- 
-     <React.Fragment>
-           <Text style={{
-             position: 'absolute',
-             top: 250,
-             left: l_r + 40,
-             fontWeight: 'bold'
-           }}>
-             MY PANTRY
-           </Text>
-     </React.Fragment>
- 
-     <React.Fragment>
-           <Text style={{
-             position: 'absolute',
-             top: 250,
-             right: l_r + 40,
-             fontWeight: 'bold'
-           }}>
-             MY FRIDGE
-           </Text>
-     </React.Fragment>
- 
-     <React.Fragment>
-           <Text style={{
-             position: 'absolute',
-             bottom: 155,
-             left: l_r + 35,
-             fontWeight: 'bold'
-           }}>
-             MY FREEZER
-           </Text>
-     </React.Fragment>
- 
-     <React.Fragment>
-           <Text style={{
-             position: 'absolute',
-             bottom: 155,
-             right: l_r + 40,
-             fontWeight: 'bold',
-             fontFamily: 'Cochin'
-           }}>
-             MY SPICES
-           </Text>
-     </React.Fragment>
+      <Text style = { styles.body}>Welcome to MiCocina! To get started, click on an icon below to add items to your pantry or grocery list</Text>
+      <View style ={styles.content}>
+      <TouchableOpacity
+             onPress={() => navigation.navigate('Pantry')}
+             underlayColor='#fff'>
+               <Image source={require('./images/pantry.jpeg')} style={styles.rectangle} />
+         </TouchableOpacity>
+         <Text style={{
+               position: 'absolute',
+               fontWeight: 'bold',
+               fontSize: 50,
+               color:'#000',
+               fontFamily: 'Roboto_900Black'
+             }}>
+             PANTRY</Text>
+          </View>
+          <View style ={styles.content}>
+      <TouchableOpacity
+             onPress={() => navigation.navigate('Grocery')}
+             underlayColor='#fff'>
+               <Image source={require('./images/grocery.jpeg')} style={styles.rectangle} />
+         </TouchableOpacity>
+         <Text style={{
+               position: 'absolute',
+               fontWeight: 'bold',
+               fontSize: 50,
+               color:'#000',
+               fontFamily: 'Roboto_900Black'
+             }}>
+             GROCERY LIST</Text>
+          </View>
  
  
-     <TouchableOpacity onPress={() => navigation.navigate('Pantry')}
-                   style={styles.myPantryButton}>
-     </TouchableOpacity>
+     
  
-     <TouchableOpacity onPress={() => navigation.navigate('Pantry')}
-                 style={styles.myFreezerButton}>
-     </TouchableOpacity>
- 
-     <TouchableOpacity onPress={() => navigation.navigate('Pantry')}
-                 style={styles.myFridgeButton}>
-     </TouchableOpacity>
- 
-     <TouchableOpacity onPress={() => navigation.navigate('Pantry')}
-                 style={styles.mySpicesButton}>
-     </TouchableOpacity>
- 
+  
    </View>
    </SafeAreaView>
    );
