@@ -151,6 +151,8 @@ const PantryPage = (props) =>{
                     <MenuOption value = "Deli" text="Deli"/>
                     <MenuOption value = "Bread/Bakery" text="Bread/Bakery"/>
                     <MenuOption value = "Frozen Food" text="Frozen Food"/>
+                    <MenuOption value = "Canned Good" text="Canned Good"/>
+                    <MenuOption value = "Meat/Seafood" text="Meat/Seafood"/>
                 </MenuOptions>
             </Menu>
             <TouchableOpacity onPress={() => decrementQuantity(item?.id)}>
