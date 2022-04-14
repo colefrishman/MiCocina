@@ -46,11 +46,9 @@ const GroceryPage = (props) =>{
   
     const [term, setTerm] = useState("");
 
-    items = props.items
-    setItems = props.setItems
-
     // default items
-    
+    let items = props.items;
+    let setItems = props.setItems;
 
     //asynch storage 
 
@@ -137,10 +135,10 @@ const GroceryPage = (props) =>{
         }
         if(sort_type == QUANTITY){
             temp.sort((a,b)=>{
-                if(a.grocery_qty > b.grocery_qty){
+                if(a.product_qty > b.product_qty){
                     return 1
                 }
-                if(a.grocery_qty < b.grocery_qty){
+                if(a.product_qty < b.product_qty){
                     return -1
                 }
                 return 0
@@ -172,6 +170,11 @@ const GroceryPage = (props) =>{
 
     // list container
     const ListItem = ({item}) =>{
+        
+        if(item.grocery_qty<=0){
+            return <></>
+        }
+
         return (
         <View style={styles.itemList}>
             <View style= {{flex:1}}>
@@ -194,7 +197,7 @@ const GroceryPage = (props) =>{
                         <Text>-</Text>
                     </View>
             </TouchableOpacity>
-                <Text>{item?.grocery_qty}</Text>
+                <Text>{item?.product_qty}</Text>
             <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>+</Text>
@@ -202,7 +205,7 @@ const GroceryPage = (props) =>{
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.circle}
-                onPress={() =>deleteID(item?.id)}
+                onPress={() =>deleteID(item?.id, item?.itemName, item?.category, item?.grocery_qty)}
             />
         </View>
         
@@ -223,12 +226,26 @@ const GroceryPage = (props) =>{
         setTextInput("");
     };
 
+    const addToPantry = (itemN,itemCat, quant) => {
+        const newItem = {
+            id:Math.random(),
+            itemName : itemN,
+            pantry_qty: quant,
+            grocery_qty: 0,
+            category: itemCat
+        };
+        setItems([...items, newItem]);
+    }
+
     //delete item
-    const deleteID = itemID => {
+    const deleteID = (itemID,itemN,itemCat,quant) => {
         const newItems = items.filter(item=>item.id != itemID);
-        setItems(newItems);
-      }
-    
+        setItems(items=>
+            items.map((item) =>
+            itemID ==item.id ? {...item, pantry_qty:item.grocery_qty, grocery_qty:0 } : item)
+        )
+    }
+
     //delete entire list
     const clearGroceryList = ()=>{
         Alert.alert("Confirm", "Clear entire grocery list?",[
@@ -279,7 +296,7 @@ const GroceryPage = (props) =>{
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items} 
-                renderItem= {({item})=>(item.grocery_qty>0) ? <ListItem item={item}/> : <></>}
+                renderItem= {({item})=><ListItem item={item}/>}
             
             />
 

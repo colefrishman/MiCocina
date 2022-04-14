@@ -34,6 +34,7 @@
     MenuOption,
     MenuTrigger,
   } from 'react-native-popup-menu';
+import AddItem from './AddItem';
 
 const PantryPage = (props) =>{
     //text box info
@@ -44,8 +45,8 @@ const PantryPage = (props) =>{
     // default items
 
     
-    items = props.items
-    setItems = props.setItems
+    let items = props.items;
+    let setItems = props.setItems;
 
     //put items in sorted order
     const sortItems = (sort_type) => {
@@ -136,6 +137,11 @@ const PantryPage = (props) =>{
 
     // list container
     const ListItem = ({item}) =>{
+
+        if(item.pantry_qty<=0){
+            return <></>
+        }
+
         return (
         <View style={styles.itemList}>
             <View style= {{flex:1}}>
@@ -163,14 +169,13 @@ const PantryPage = (props) =>{
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.circle}
-                onPress={() =>deleteID(item?.id)}
+                onPress={() =>deleteID(item?.id, item.itemName, item.category, item.pantry_qty)}
             />
         </View>
         
         );
     };
 
-    //add item to list
     const addItem = ()=>{
         console.log(textInput);
         const newItem = {
@@ -184,11 +189,26 @@ const PantryPage = (props) =>{
         setTextInput("");
     };
 
+    //add item to list
+    //const addToGrocery = (itemN,itemCat, quant) => {
+    //    const newItem = {
+    //        id:Math.random(),
+    //        itemName : itemN,
+    //        pantry_qty: 0,
+    //        grocery_qty: quant,
+    //        category: itemCat
+    //    };
+    //    setItems([...items, newItem]);
+    //}
+
     //delete item
-    const deleteID = itemID => {
+    const deleteID = (itemID,itemN,itemCat,quant) => {
         const newItems = items.filter(item=>item.id != itemID);
-        setItems(newItems);
-      }
+        setItems(items=>
+            items.map((item) =>
+            itemID ==item.id ? {...item, grocery_qty:item.pantry_qty, pantry_qty:0 } : item)
+        )
+    }
     
     //delete entire list
     const clearPantryList = ()=>{
