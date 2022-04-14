@@ -31,7 +31,7 @@
  const styles = StyleSheet.create({
   safeArea: {
     flex :1 ,
-    backgroundColor : '#fff',
+    backgroundColor : '#9FD4AB',
   },
   header: {
     padding:  15,
