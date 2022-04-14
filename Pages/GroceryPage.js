@@ -37,7 +37,7 @@
 import SearchComponent from '../components/SearchComponent';
 
 
-const GroceryPage = () =>{
+const GroceryPage = (props) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
@@ -46,12 +46,11 @@ const GroceryPage = () =>{
   
     const [term, setTerm] = useState("");
 
+    items = props.items
+    setItems = props.setItems
+
     // default items
-    const[items, setItems] = useState([
-        {id:1, itemName:'bananas',category:'Produce', product_qty: 1},
-        {id:2, itemName:'apples', category:'Produce', product_qty: 1},
-        {id:3, itemName:'orange juice', category:'Drinks', product_qty: 1}
-    ]);
+    
 
     //asynch storage 
 
@@ -138,10 +137,10 @@ const GroceryPage = () =>{
         }
         if(sort_type == QUANTITY){
             temp.sort((a,b)=>{
-                if(a.product_qty > b.product_qty){
+                if(a.grocery_qty > b.grocery_qty){
                     return 1
                 }
-                if(a.product_qty < b.product_qty){
+                if(a.grocery_qty < b.grocery_qty){
                     return -1
                 }
                 return 0
@@ -158,7 +157,7 @@ const GroceryPage = () =>{
     const decrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty - 1 } : item)
+            itemID ==item.id ? {...item, grocery_qty:item.grocery_qty - 1 } : item)
         )
     };
 
@@ -166,7 +165,7 @@ const GroceryPage = () =>{
     const incrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty + 1 } : item)
+            itemID ==item.id ? {...item, grocery_qty:item.grocery_qty + 1 } : item)
         )
     };
 
@@ -195,7 +194,7 @@ const GroceryPage = () =>{
                         <Text>-</Text>
                     </View>
             </TouchableOpacity>
-                <Text>{item?.product_qty}</Text>
+                <Text>{item?.grocery_qty}</Text>
             <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>+</Text>
@@ -216,7 +215,8 @@ const GroceryPage = () =>{
         const newItem = {
             id:Math.random(),
             itemName : textInput,
-            product_qty: 1,
+            grocery_qty: 1,
+            pantry_qty: 0,
             category: "Uncategorized"
         };
         setItems([...items, newItem]);
@@ -279,7 +279,7 @@ const GroceryPage = () =>{
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items} 
-                renderItem= {({item})=><ListItem item={item}/>}
+                renderItem= {({item})=>(item.grocery_qty>0) ? <ListItem item={item}/> : <></>}
             
             />
 
