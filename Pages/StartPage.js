@@ -22,7 +22,7 @@
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
  import {SearchBar} from 'react-native-elements';
- import SearchComponent from '../components/SearchComponent';
+ //import SearchComponent from '../components/SearchComponent';
  
  var size = 150;
  var t_b = 100;
@@ -136,14 +136,14 @@ headingText:{
    }  
 
    
-
+//<SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
    return (
     <SafeAreaView style= {styles.safeArea}>
       <View style = {styles.header}>
       <Text style= {styles.headingText}>MiCocina</Text>
       </View>
       <View>
-      <SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
+
  
      <TouchableOpacity
                style={styles.sectionButton}

@@ -148,6 +148,10 @@ const PantryPage = (props) =>{
                     <MenuOption value = "Produce"       text="Produce"/>
                     <MenuOption value = "Uncategorized" text="Uncategorized"/>
                     <MenuOption value = "Drinks" text="Drinks"/>
+                    <MenuOption value = "Dairy" text="Dairy"/>
+                    <MenuOption value = "Deli" text="Deli"/>
+                    <MenuOption value = "Bread/Bakery" text="Bread/Bakery"/>
+                    <MenuOption value = "Frozen Food" text="Frozen Food"/>
                 </MenuOptions>
             </Menu>
             <TouchableOpacity onPress={() => decrementQuantity(item?.id)}>
@@ -240,15 +244,9 @@ const PantryPage = (props) =>{
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
                 <Text style= {styles.headingText}>PANTRY LIST</Text>
-                <TouchableOpacity>
-                    <AntDesign name="search1" size={24} color="black"/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={clearPantryList}>
-                    <Entypo name="trash" size={24} color="black" />
-                </TouchableOpacity>
                 <Menu onSelect={(value) => sortItems(value)}>
                     <MenuTrigger>
-                        <MaterialCommunityIcons name="sort" size={24} color="black" />
+                        <MaterialCommunityIcons name="sort" size={24} color="black"  marginLeft={30}/>
                     </MenuTrigger>
                     <MenuOptions>
                         <MenuOption value = {0}  text="Sort by id"/>
@@ -256,6 +254,9 @@ const PantryPage = (props) =>{
                         <MenuOption value = {2}  text="Sort by category"/>
                         <MenuOption value = {3}  text="Sort by quantity"/>
                     </MenuOptions>
+                    <TouchableOpacity onPress={clearPantryList}>
+                    <Entypo name="trash" size={24} color="black" marginHorizontal={20}/>
+                </TouchableOpacity>
                 </Menu>
 
             </View>
@@ -296,7 +297,7 @@ const styles = StyleSheet.create({
     header: {
         padding:  15,
         paddingLeft: 10,
-        paddingRight: 75,
+        paddingRight: 50,
         flexDirection: 'row',
         alignContent: 'center',
         justifyContent: 'space-between',

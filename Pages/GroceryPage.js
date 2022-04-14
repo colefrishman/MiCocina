@@ -25,7 +25,6 @@
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
  import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
- import AsyncStorage from '@react-native-async-storage/async-storage';
  const { width } = Dimensions.get("window");
 
  import {
@@ -34,7 +33,7 @@
     MenuOption,
     MenuTrigger,
   } from 'react-native-popup-menu';
-import SearchComponent from '../components/SearchComponent';
+
 
 
 const GroceryPage = (props) =>{
@@ -49,40 +48,6 @@ const GroceryPage = (props) =>{
     items = props.items
     setItems = props.setItems
 
-    // default items
-
-
-
-    //asynch storage
-
-    // useEffect( () => {
-    //     getItemList();
-    // }, []);
-
-    // useEffect(() => {
-    //     saveItem(items);
-    // }, [items]);
-
-    // const saveItem = async items =>{
-    //     try{
-    //         const stringifyItems= JSON.stringify(items);
-    //         await AsyncStorage.setItem('items', stringifyItems);
-    //     } catch(e){
-    //         console.log(e);
-    //         //error
-    //     }
-    // }
-
-    // const getItemList = async () => {
-    //     try {
-    //         const items =await AsyncStorage.getItem('items');
-    //         if(items != null){
-    //             setItems(JSON.parse(items));
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
 
     const sortItems = (sort_type) => {
         let temp = [...items]
@@ -184,6 +149,7 @@ const GroceryPage = (props) =>{
                     <MenuOption value = "Dried Goods"   text="Dried Goods"/>
                     <MenuOption value = "Produce"       text="Produce"/>
                     <MenuOption value = "Uncategorized" text="Uncategorized"/>
+                    <MenuOption value = "Drinks" text="Drinks"/>
                     <MenuOption value = "Dairy" text="Dairy"/>
                     <MenuOption value = "Deli" text="Deli"/>
                     <MenuOption value = "Bread/Bakery" text="Bread/Bakery"/>
@@ -207,7 +173,7 @@ const GroceryPage = (props) =>{
                 onPress={() =>deleteID(item?.id,item?.itemName,item?.category,item?.grocery_qty)}
 
                 //onPress={() =>deleteID(item?.id)
-                onPress={() =>addPantry(item?.id)}
+                //onPress={() =>addPantry(item?.id)}
 
             />
         </View>
@@ -295,7 +261,7 @@ const GroceryPage = (props) =>{
         return <AppLoading /> ;
     }
 
-
+//<SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
 
     return (
         <SafeAreaView style= {styles.safeArea}>
@@ -316,7 +282,6 @@ const GroceryPage = (props) =>{
                     <Entypo name="trash" size={24} color="black" paddingHorizontal={20}/>
                 </TouchableOpacity>
             </View>
-            <SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
             <FlatList
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
