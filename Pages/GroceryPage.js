@@ -19,7 +19,7 @@
    Modal,
    Dimensions
 
-   
+
  } from 'react-native';
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
@@ -37,21 +37,52 @@
 import SearchComponent from '../components/SearchComponent';
 
 
-const GroceryPage = () =>{
+const GroceryPage = (props) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
     const [sort, setSort] = useState(0);
     const [sortDirection, setSortDirection] = useState(false);
-  
+
     const [term, setTerm] = useState("");
 
+    items = props.items
+    setItems = props.setItems
+
     // default items
-    const[items, setItems] = useState([
-        {id:1, itemName:'bananas',category:'Produce', product_qty: 1},
-        {id:2, itemName:'apples', category:'Produce', product_qty: 1},
-        {id:3, itemName:'orange juice', category:'Drinks', product_qty: 1}
-    ]);
+
+
+
+    //asynch storage
+
+    // useEffect( () => {
+    //     getItemList();
+    // }, []);
+
+    // useEffect(() => {
+    //     saveItem(items);
+    // }, [items]);
+
+    // const saveItem = async items =>{
+    //     try{
+    //         const stringifyItems= JSON.stringify(items);
+    //         await AsyncStorage.setItem('items', stringifyItems);
+    //     } catch(e){
+    //         console.log(e);
+    //         //error
+    //     }
+    // }
+
+    // const getItemList = async () => {
+    //     try {
+    //         const items =await AsyncStorage.getItem('items');
+    //         if(items != null){
+    //             setItems(JSON.parse(items));
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     const sortItems = (sort_type) => {
         let temp = [...items]
@@ -107,27 +138,27 @@ const GroceryPage = () =>{
         }
         if(sort_type == QUANTITY){
             temp.sort((a,b)=>{
-                if(a.product_qty > b.product_qty){
+                if(a.grocery_qty > b.grocery_qty){
                     return 1
                 }
-                if(a.product_qty < b.product_qty){
+                if(a.grocery_qty < b.grocery_qty){
                     return -1
                 }
                 return 0
             })
         }
-        
-        if(sd){   
+
+        if(sd){
             temp.reverse()
         }
         setItems(temp)
     }
 
-    //decrement 
+    //decrement
     const decrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty - 1 } : item)
+            itemID ==item.id ? {...item, grocery_qty:item.grocery_qty - 1 } : item)
         )
     };
 
@@ -135,7 +166,7 @@ const GroceryPage = () =>{
     const incrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty + 1 } : item)
+            itemID ==item.id ? {...item, grocery_qty:item.grocery_qty + 1 } : item)
         )
     };
 
@@ -164,19 +195,23 @@ const GroceryPage = () =>{
                         <Text>-</Text>
                     </View>
             </TouchableOpacity>
-                <Text>{item?.product_qty}</Text>
+                <Text>{item?.grocery_qty}</Text>
             <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>+</Text>
                     </View>
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.circle}
+
+                onPress={() =>deleteID(item?.id,item?.itemName,item?.category,item?.grocery_qty)}
+
                 //onPress={() =>deleteID(item?.id)
                 onPress={() =>addPantry(item?.id)}
+
             />
         </View>
-        
+
         );
     };
 
@@ -186,19 +221,40 @@ const GroceryPage = () =>{
         const newItem = {
             id:Math.random(),
             itemName : textInput,
-            product_qty: 1,
+            grocery_qty: 1,
+            pantry_qty: 0,
             category: "Uncategorized"
         };
         setItems([...items, newItem]);
         setTextInput("");
     };
 
+    const addToPantry = (itemN,itemCat, quant) => {
+               const newItem = {
+                   id:Math.random(),
+                   itemName : itemN,
+                   pantry_qty: quant,
+                   grocery_qty: 0,
+                   category: itemCat
+               };
+               setItems([...items, newItem]);
+        }
+
     //delete item
-    const deleteID = itemID => {
+    const deleteID = (itemID,itemN,itemCat,quant) => {
         const newItems = items.filter(item=>item.id != itemID);
         setItems(newItems);
+        Alert.alert("Confirm", "Would you like to add " + itemN + " to your Pantry?",[
+            {
+            text: "Yes",
+            onPress: ()=>addToPantry(itemN, itemCat, quant),
+            },{
+                text:"No",
+            }
+
+        ])
       }
-    
+
     //delete entire list
     const clearGroceryList = ()=>{
         Alert.alert("Confirm", "Clear entire grocery list?",[
@@ -209,10 +265,11 @@ const GroceryPage = () =>{
                 text:"No",
                 
             }
-    
+
         ])
-        
+
     }
+
     //delete item and ask if adding to pantry
     const addPantry = itemID => {
         Alert.alert("Adding to Pantry", "Would you like to add item to your pantry?",[
@@ -227,6 +284,7 @@ const GroceryPage = () =>{
         ])
     }
  
+
     //getting font
     let [fontsLoaded] = useFonts({
        Roboto_700Bold,
@@ -237,8 +295,8 @@ const GroceryPage = () =>{
         return <AppLoading /> ;
     }
 
-    
-   
+
+
     return (
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
@@ -259,18 +317,18 @@ const GroceryPage = () =>{
                 </TouchableOpacity>
             </View>
             <SearchComponent onSearchEnter={(newTerm) => {setTerm(newTerm)}} />
-            <FlatList 
+            <FlatList
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
-                data={items} 
-                renderItem= {({item})=><ListItem item={item}/>}
-            
+                data={items}
+                renderItem= {({item})=>(item.grocery_qty>0) ? <ListItem item={item}/> : <></>}
+
             />
 
             <View style={styles.bottomAdd}>
-                <View style = {styles.inputBox}> 
-                    <TextInput 
-                    placeholder="Add an Item" 
+                <View style = {styles.inputBox}>
+                    <TextInput
+                    placeholder="Add an Item"
                     value = {textInput}
                     onChangeText={text=>setTextInput(text)}/>
                 </View>
@@ -279,10 +337,10 @@ const GroceryPage = () =>{
                         <Text>+</Text>
                     </View>
                 </TouchableOpacity>
-                
-                   
+
+
             </View>
-            
+
 
         </SafeAreaView>
     );
@@ -306,18 +364,18 @@ const styles = StyleSheet.create({
         paddingLeft:19,
         paddingRight: 10,
         textAlign: 'left',
-        fontWeight: 'bold', 
-        fontSize: 25, 
+        fontWeight: 'bold',
+        fontSize: 25,
         color: '#fff',
         width: '100%',
         fontFamily: 'Roboto_900Black'
-        
+
     },
     headerButtons:{
 
     },
     bottomAdd: {
-        position: 'absolute', 
+        position: 'absolute',
         bottom: 0,
         color: '#fff',
         width: '100%',
@@ -342,7 +400,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingBottom:15,
         marginVertical: 20
-  
+
     },
     addButton: {
         width: 50,
@@ -377,7 +435,7 @@ const styles = StyleSheet.create({
     circle: {
         width : 20,
         height : 20,
-        borderColor : '#85C285', 
+        borderColor : '#85C285',
         borderWidth: 2,
         borderRadius: 20/2,
         justifyContent : 'center',
@@ -386,9 +444,8 @@ const styles = StyleSheet.create({
 
     },
 
- 
+
 })
 
 
 export default GroceryPage;
-

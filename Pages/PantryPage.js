@@ -19,7 +19,7 @@
    Modal,
    Dimensions
 
-   
+
  } from 'react-native';
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
@@ -35,18 +35,17 @@
     MenuTrigger,
   } from 'react-native-popup-menu';
 
-const PantryPage = () =>{
+const PantryPage = (props) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
     const [sort, setSort] = useState(0);
     const [sortDirection, setSortDirection] = useState(false);
     // default items
-    const[items, setItems] = useState([
-        {id:0, itemName:'bananas', category:'Produce', product_qty: 1},
-        {id:1, itemName:'apples', category:'Produce', product_qty: 1},
-        {id:2, itemName:'orange juice', category: 'Drinks', product_qty: 1}
-    ]);
+
+
+    items = props.items
+    setItems = props.setItems
 
     //put items in sorted order
     const sortItems = (sort_type) => {
@@ -103,27 +102,27 @@ const PantryPage = () =>{
         }
         if(sort_type == QUANTITY){
             temp.sort((a,b)=>{
-                if(a.product_qty > b.product_qty){
+                if(a.pantry_qty > b.pantry_qty){
                     return 1
                 }
-                if(a.product_qty < b.product_qty){
+                if(a.pantry_qty < b.pantry_qty){
                     return -1
                 }
                 return 0
             })
         }
-        
-        if(sd){   
+
+        if(sd){
             temp.reverse()
         }
         setItems(temp)
     }
 
-    //decrement 
+    //decrement
     const decrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty - 1 } : item)
+            itemID ==item.id ? {...item, pantry_qty:item.pantry_qty - 1 } : item)
         )
     };
 
@@ -131,7 +130,7 @@ const PantryPage = () =>{
     const incrementQuantity = itemID=> {
         setItems(items=>
             items.map((item) =>
-            itemID ==item.id ? {...item, product_qty:item.product_qty + 1 } : item)
+            itemID ==item.id ? {...item, pantry_qty:item.pantry_qty + 1 } : item)
         )
     };
 
@@ -156,18 +155,18 @@ const PantryPage = () =>{
                         <Text>-</Text>
                     </View>
             </TouchableOpacity>
-                <Text>{item?.product_qty}</Text>
+                <Text>{item?.pantry_qty}</Text>
             <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>+</Text>
                     </View>
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={styles.circle}
-                onPress={() =>deleteID(item?.id)}
+                onPress={() =>deleteID(item?.id,item?.itemName,item?.category,item?.pantry_qty)}
             />
         </View>
-        
+
         );
     };
 
@@ -177,19 +176,40 @@ const PantryPage = () =>{
         const newItem = {
             id:Math.random(),
             itemName : textInput,
-            product_qty: 1,
+            pantry_qty: 1,
+            grocery_qty: 0,
             category: "Uncategorized"
         };
         setItems([...items, newItem]);
         setTextInput("");
     };
 
+    const addToGrocery = (itemN,itemCat, quant) => {
+           const newItem = {
+               id:Math.random(),
+               itemName : itemN,
+               pantry_qty: 0,
+               grocery_qty: quant,
+               category: itemCat
+           };
+           setItems([...items, newItem]);
+    }
+
     //delete item
-    const deleteID = itemID => {
+    const deleteID = (itemID, itemN, itemCat, quant) => {
         const newItems = items.filter(item=>item.id != itemID);
         setItems(newItems);
+        Alert.alert("Confirm", "Would you like to add " + itemN + " to your grocery list?",[
+                    {
+                    text: "Yes",
+                    onPress: ()=>addToGrocery(itemN, itemCat, quant),
+                    },{
+                        text:"No",
+                    }
+
+                ])
       }
-    
+
     //delete entire list
     const clearPantryList = ()=>{
         Alert.alert("Confirm", "Clear entire Pantry?",[
@@ -199,11 +219,11 @@ const PantryPage = () =>{
             },{
                 text:"No",
             }
-    
+
         ])
-        
+
     }
- 
+
     //getting font
     let [fontsLoaded] = useFonts({
        Roboto_700Bold,
@@ -214,8 +234,8 @@ const PantryPage = () =>{
         return <AppLoading /> ;
     }
 
-    
-   
+
+
     return (
         <SafeAreaView style= {styles.safeArea}>
             <View style = {styles.header}>
@@ -237,21 +257,21 @@ const PantryPage = () =>{
                         <MenuOption value = {3}  text="Sort by quantity"/>
                     </MenuOptions>
                 </Menu>
-        
+
             </View>
-        
-            <FlatList 
+
+            <FlatList
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
-                data={items} 
-                renderItem= {({item})=><ListItem item={item}/>}
-            
+                data={items}
+                renderItem= {({item})=>(item.pantry_qty >0) ? <ListItem item={item}/> : <></>}
+
             />
 
             <View style={styles.bottomAdd}>
-                <View style = {styles.inputBox}> 
-                    <TextInput 
-                    placeholder="Add an Item" 
+                <View style = {styles.inputBox}>
+                    <TextInput
+                    placeholder="Add an Item"
                     value = {textInput}
                     onChangeText={text=>setTextInput(text)}/>
                 </View>
@@ -260,10 +280,10 @@ const PantryPage = () =>{
                         <Text>+</Text>
                     </View>
                 </TouchableOpacity>
-                
-                   
+
+
             </View>
-            
+
 
         </SafeAreaView>
     );
@@ -287,18 +307,18 @@ const styles = StyleSheet.create({
         paddingLeft:19,
         paddingRight: 10,
         textAlign: 'left',
-        fontWeight: 'bold', 
-        fontSize: 25, 
+        fontWeight: 'bold',
+        fontSize: 25,
         color: '#fff',
         width: '100%',
         fontFamily: 'Roboto_900Black'
-        
+
     },
     headerButtons:{
 
     },
     bottomAdd: {
-        position: 'absolute', 
+        position: 'absolute',
         bottom: 0,
         color: '#fff',
         width: '100%',
@@ -323,7 +343,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingBottom:15,
         marginVertical: 20
-  
+
     },
     addButton: {
         width: 50,
@@ -358,7 +378,7 @@ const styles = StyleSheet.create({
     circle: {
         width : 20,
         height : 20,
-        borderColor : '#85C285', 
+        borderColor : '#85C285',
         borderWidth: 2,
         borderRadius: 20/2,
         justifyContent : 'center',
@@ -367,7 +387,7 @@ const styles = StyleSheet.create({
 
     },
 
- 
+
 })
- 
+
  export default PantryPage;
