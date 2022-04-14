@@ -52,6 +52,7 @@ const GroceryPage = (props) =>{
     // default items
 
 
+
     //asynch storage
 
     // useEffect( () => {
@@ -202,7 +203,12 @@ const GroceryPage = (props) =>{
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.circle}
+
                 onPress={() =>deleteID(item?.id,item?.itemName,item?.category,item?.grocery_qty)}
+
+                //onPress={() =>deleteID(item?.id)
+                onPress={() =>addPantry(item?.id)}
+
             />
         </View>
 
@@ -257,11 +263,27 @@ const GroceryPage = (props) =>{
             onPress: ()=>setItems([]),
             },{
                 text:"No",
+                
             }
 
         ])
 
     }
+
+    //delete item and ask if adding to pantry
+    const addPantry = itemID => {
+        Alert.alert("Adding to Pantry", "Would you like to add item to your pantry?",[
+            {
+            text: "Yes",
+            onPress: () => deleteID(itemID)
+            },{
+                text:"No",
+                onPress: () => deleteID(itemID)
+            }
+    
+        ])
+    }
+ 
 
     //getting font
     let [fontsLoaded] = useFonts({
