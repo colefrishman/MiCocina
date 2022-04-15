@@ -58,11 +58,6 @@ const BottomTabs = () => {
                     <AntDesign name="shoppingcart" size={24} color="black" />
                 )
             }} />
-            <Tab.Screen name = 'Add Item' children={() => <AddItem items={items} setItems={setItems} />} options = {{
-                tabBarIcon: () => (
-                    <Entypo name="add-to-list" size={24} color="black" />
-                )
-            }} />
         </Tab.Navigator>
     )
 
