@@ -10,6 +10,7 @@
  import {
    SafeAreaView,
    StyleSheet,
+   ScrollView,
    View,
    Text,
    TextInput,
@@ -18,9 +19,8 @@
    Alert,
    Modal,
    Dimensions
-
-   
  } from 'react-native';
+ import {List} from 'react-native-paper';
  import {  Roboto_700Bold, Roboto_900Black} from '@expo-google-fonts/roboto';
  import { useFonts } from 'expo-font';
  import AppLoading from "expo-app-loading";
@@ -35,13 +35,15 @@
     MenuTrigger,
   } from 'react-native-popup-menu';
 import AddItem from './AddItem';
+import { Button } from 'react-native-elements';
 
 const PantryPage = (props) =>{
     //text box info
     const [textInput, setTextInput] = useState("");
 
     const [sort, setSort] = useState(0);
-    const [sortDirection, setSortDirection] = useState(false);
+    const [sortDirection, setSortDirection] = useState(false); 
+    
     // default items
 
     
@@ -90,7 +92,7 @@ const PantryPage = (props) =>{
                 return 0
             })
         }
-        if(sort_type == CATEGORICAL){
+        if(sort_type == CATEGORICAL){  
             temp.sort((a,b)=>{
                 if(a.category.toLowerCase() > b.category.toLowerCase()){
                     return 1
@@ -154,6 +156,12 @@ const PantryPage = (props) =>{
                     <MenuOption value = "Produce"       text="Produce"/>
                     <MenuOption value = "Uncategorized" text="Uncategorized"/>
                     <MenuOption value = "Drinks" text="Drinks"/>
+                    <MenuOption value = "Dairy" text="Dairy"/>
+                    <MenuOption value = "Deli" text="Deli"/>
+                    <MenuOption value = "Bread/Bakery" text="Bread/Bakery"/>
+                    <MenuOption value = "Frozen Food" text="Frozen Food"/>
+                    <MenuOption value = "Canned Good" text="Canned Good"/>
+                    <MenuOption value = "Meat/Seafood" text="Meat/Seafood"/>
                 </MenuOptions>
             </Menu>
             <TouchableOpacity onPress={() => decrementQuantity(item?.id)}>
@@ -236,7 +244,14 @@ const PantryPage = (props) =>{
         return <AppLoading /> ;
     }
 
-    
+    const CollapsedCat = (props) => {
+        return( <List.Accordion title={props.cat}><FlatList 
+                    showsVerticalScrollIndicator= {false}
+                    contentContainerStyle={{padding:20, paddingBottom:100}}
+                    data={props.data} 
+                    renderItem= {({item})=>(item.pantry_qty >0  && item.category == props.cat) ? <ListItem item={item}/> : <></>}
+                /> </List.Accordion>)
+    }
    
     return (
         <SafeAreaView style= {styles.safeArea}>
@@ -261,14 +276,116 @@ const PantryPage = (props) =>{
                 </Menu>
         
             </View>
-        
-            <FlatList 
+
+            <ScrollView>
+                <List.Section>
+                    <List.Accordion
+                        title="Dried Goods"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0 && item.category === "Dried Goods") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion
+                        title="Drinks"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Drinks") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion
+                        title="Produce"
+                    >
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Produce") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Uncategorized">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Uncategorized") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Dairy">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Dairy") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Deli">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Deli") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Bread/Bakery">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Bread/Bakery") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Frozen Food">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Frozen Food") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Canned Good">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Canned Good") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    <List.Accordion title="Meat/Seafood">
+                        <FlatList 
+                            showsVerticalScrollIndicator= {false}
+                            contentContainerStyle={{padding:20, paddingBottom:100}}
+                            data={items} 
+                            renderItem= {({item})=>(item.pantry_qty >0  && item.category === "Meat/Seafood") ? <ListItem item={item}/> : <></>}
+                        />
+                    </List.Accordion>
+
+                    
+                </List.Section>
+            </ScrollView>
+
+            {/* <FlatList 
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items} 
                 renderItem= {({item})=>(item.pantry_qty >0) ? <ListItem item={item}/> : <></>}
             
-            />
+            /> */}
 
             <View style={styles.bottomAdd}>
                 <View style = {styles.inputBox}> 
