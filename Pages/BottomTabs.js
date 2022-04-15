@@ -20,7 +20,7 @@ const BottomTabs = () => {
         {id:3, itemName:'cheese', category: 'Dairy', pantry_qty: 0, grocery_qty: 1},
         {id:4, itemName:'cereal', category: 'Dried Goods', pantry_qty: 0, grocery_qty: 10},
         {id:5, itemName:'bread', category: 'Bread/Bakery', pantry_qty: 4, grocery_qty: 0},
-        {id:6, itemName:'granola bars', category: 'Uncategorized', pantry_qty: 2, grocery_qty: 0},
+        {id:6, itemName:'grapes', category: 'Produce', pantry_qty: 2, grocery_qty: 0},
         {id:7, itemName:'beans', category: 'Canned Good', pantry_qty: 0, grocery_qty: 12},
         {id:8, itemName:'tomato sauce', category: 'Canned Good', pantry_qty: 7, grocery_qty: 0},
         {id:9, itemName:'gatorade', category: 'Drinks', pantry_qty: 0, grocery_qty: 5},
@@ -38,7 +38,7 @@ const BottomTabs = () => {
         {id:21, itemName:'popcorn', category: 'Uncategorized', pantry_qty: 0, grocery_qty: 3},
         {id:22, itemName:'corn', category: 'Produce', pantry_qty: 4, grocery_qty: 0},
         {id:23, itemName:'butter', category: 'Dairy', pantry_qty: 0, grocery_qty: 3},
-        {id:24, itemName:'grapes', category: 'Produce', pantry_qty: 0, grocery_qty: 1}
+        {id:24, itemName:'granola bars', category: 'Uncategorized', pantry_qty: 0, grocery_qty: 1}
     ])
 
     return(
