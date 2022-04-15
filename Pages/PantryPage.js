@@ -208,6 +208,8 @@ const PantryPage = (props) =>{
             items.map((item) =>
             itemID ==item.id ? {...item, grocery_qty:item.pantry_qty, pantry_qty:0 } : item)
         )
+        
+        Alert.alert(`${itemN} moved to grocery list`)
     }
     
     //delete entire list

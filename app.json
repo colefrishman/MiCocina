@@ -2,5 +2,9 @@
   "expo": {
     "name": "MiCocina",
     "slug": "MiCocina"
+  },
+  
+  "androidNavigationBar": {
+    "visible": "immersive"
   }
 }

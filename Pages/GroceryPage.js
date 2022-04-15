@@ -135,10 +135,10 @@ const GroceryPage = (props) =>{
         }
         if(sort_type == QUANTITY){
             temp.sort((a,b)=>{
-                if(a.product_qty > b.product_qty){
+                if(a.grocery_qty > b.grocery_qty){
                     return 1
                 }
-                if(a.product_qty < b.product_qty){
+                if(a.grocery_qty < b.grocery_qty){
                     return -1
                 }
                 return 0
@@ -197,7 +197,7 @@ const GroceryPage = (props) =>{
                         <Text>-</Text>
                     </View>
             </TouchableOpacity>
-                <Text>{item?.product_qty}</Text>
+                <Text>{item?.grocery_qty}</Text>
             <TouchableOpacity onPress={() => incrementQuantity(item?.id)}>
                 <View style={styles.addButtonSmall}>
                         <Text>+</Text>
@@ -226,16 +226,16 @@ const GroceryPage = (props) =>{
         setTextInput("");
     };
 
-    const addToPantry = (itemN,itemCat, quant) => {
-        const newItem = {
-            id:Math.random(),
-            itemName : itemN,
-            pantry_qty: quant,
-            grocery_qty: 0,
-            category: itemCat
-        };
-        setItems([...items, newItem]);
-    }
+    //const addToPantry = (itemN,itemCat, quant) => {
+    //    const newItem = {
+    //        id:Math.random(),
+    //        itemName : itemN,
+    //        pantry_qty: quant,
+    //        grocery_qty: 0,
+    //        category: itemCat
+    //    };
+    //    setItems([...items, newItem]);
+    //}
 
     //delete item
     const deleteID = (itemID,itemN,itemCat,quant) => {
@@ -244,6 +244,7 @@ const GroceryPage = (props) =>{
             items.map((item) =>
             itemID ==item.id ? {...item, pantry_qty:item.grocery_qty, grocery_qty:0 } : item)
         )
+        Alert.alert(`${itemN} moved to pantry list`)
     }
 
     //delete entire list
@@ -296,7 +297,7 @@ const GroceryPage = (props) =>{
                 showsVerticalScrollIndicator= {false}
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items} 
-                renderItem= {({item})=><ListItem item={item}/>}
+                renderItem= {({item})=>(item.grocery_qty >0) ? <ListItem item={item}/> : <></>}
             
             />
 
