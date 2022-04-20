@@ -42,7 +42,6 @@ const PantryPage = (props) =>{
     const [sortDirection, setSortDirection] = useState(false);
     // default items
 
-
     items = props.items
     setItems = props.setItems
 
@@ -267,6 +266,7 @@ const PantryPage = (props) =>{
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items}
                 renderItem= {({item})=>(item.pantry_qty >0) ? <ListItem item={item}/> : <></>}
+
 
             />
 

@@ -43,11 +43,11 @@ const GroceryPage = (props) =>{
     const [sort, setSort] = useState(0);
     const [sortDirection, setSortDirection] = useState(false);
 
+
     const [term, setTerm] = useState("");
 
     items = props.items
     setItems = props.setItems
-
 
     const sortItems = (sort_type) => {
         let temp = [...items]
@@ -289,6 +289,7 @@ const GroceryPage = (props) =>{
                 contentContainerStyle={{padding:20, paddingBottom:100}}
                 data={items}
                 renderItem= {({item})=>(item.grocery_qty>0) ? <ListItem item={item}/> : <></>}
+
 
             />
 
