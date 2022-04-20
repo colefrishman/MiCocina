@@ -12,12 +12,15 @@
  import { StyleSheet, View, Text } from 'react-native-web';
  import BottomTabs from './Pages/BottomTabs';
  import { MenuProvider } from 'react-native-popup-menu';
+ import { StatusBar } from 'react-native'
 
  //const Stack = createNativeStackNavigator();
  
  const App = () => {
    return (
      <MenuProvider>
+             <StatusBar barStyle = "dark-content" hidden = {true} backgroundColor = "#9FD4AB" translucent = {true}/>
+
       <NavigationContainer>
         <BottomTabs />
       </NavigationContainer>
